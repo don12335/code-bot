@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Bot - 介紹</title>
+
+<!-- Orbitron 字體 -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  font-family:'Orbitron',sans-serif;
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+  background:#000; /* 黑色背景 */
+}
+
+canvas#stars{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:-1;
+}
+
+header {
+  padding:50px 0;
+}
+
+header h1{
+  font-size: 3.2rem;
+  color: #9dd6ff; /* 標題淺藍色 */
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  cursor:pointer;
+}
+
+section{
+  max-width:900px;
+  margin:40px auto;
+  padding:20px;
+  text-align:left;
+}
+
+h2{
+  color:#9dd6ff; /* 與標題色統一 */
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+p{
+  line-height:1.8;
+  font-size:1.1rem;
+  color:#bcdfff; /* 文字色淡藍 */
+}
+
+/* 卡片網格 */
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+  margin-top:30px;
+}
+
+/* 單張卡片 */
+.feature-card{
+  background:rgba(255,255,255,0.05);
+  border-radius:15px;
+  padding:20px;
+  font-weight:600;
+  font-size:1rem;
+  text-align:center;
+  opacity:0;
+  transform:translateY(40px);
+  border:2px solid #9dd6ff;
+  transition:all 0.6s ease-out;
+}
+
+/* 滑入時 */
+.feature-card.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* 懸浮 */
+.feature-card:hover{
+  transform:translateY(-10px);
+  border-color:#bcdfff;
+}
+
+.hero-buttons .btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 16px 50px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #9dd6ff;
+  border: 2px solid #9dd6ff;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.hero-buttons .btn:hover {
+  background: #9dd6ff;
+  color: #000;
+  transform: scale(1.05);
+}
+
+footer {
+  text-align:center;
+  padding:20px;
+  color:#aaa;
+  font-size:0.9rem;
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<header>
+<h1 onclick="window.location.href='index.html'">Code Bot</h1>
+</header>
+
+<section>
+<h2>💡 關於 Code Bot</h2>
+<p>Code Bot 能在 Discord 中直接執行多種語言（JavaScript、Python、C++ 等）。支援即時輸出、語法提示與 AI 協助。</p>
+<div class="hero-buttons">
+  <a href="https://discord.gg/SXUngR5jVS" target="_blank" class="btn">加入官方 Discord</a>
+</div>
+</section>
+
+<section id="features">
+<h2>🚀 核心功能</h2>
+<div class="features">
+  <div class="feature-card">🧠 AI 協助<br>直接向 AI 詢問程式問題</div>
+  <div class="feature-card">⚡ 即時執行<br>輸入程式碼即可立即運行</div>
+  <div class="feature-card">🌐 多語言支援<br>Python、JavaScript、C++、HTML 等</div>
+</div>
+</section>
+
+<footer>© 2025 Code Bot</footer>
+
+<script>
+// 星空動畫（簡單白色閃爍星星）
+const canvas=document.getElementById('stars');
+const ctx=canvas.getContext('2d');
+let stars=[];
+const numStars=200;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+function initStars() {
+  stars=[];
+  for(let i=0;i<numStars;i++){
+    stars.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*1.5,
+      alpha: Math.random(),
+      dAlpha: Math.random()*0.02
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let s of stars){
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+    ctx.fill();
+    s.alpha += s.dAlpha;
+    if(s.alpha>1||s.alpha<0) s.dAlpha = -s.dAlpha;
+  }
+  requestAnimationFrame(drawStars);
+}
+initStars();
+drawStars();
+
+// 卡片滑入動畫
+const cards=document.querySelectorAll('.feature-card');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:0.2});
+cards.forEach(card=>observer.observe(card));
+
+// 按鈕滑入動畫
+const buttons=document.querySelectorAll('.hero-buttons .btn');
+const btnObserver=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.style.transition="all 0.6s ease-out";
+      entry.target.style.opacity="1";
+      entry.target.style.transform="translateY(0)";
+      btnObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:0.2});
+buttons.forEach(btn=>btnObserver.observe(btn));
+</script>
+
+</body>
+</html>
