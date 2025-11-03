@@ -7,7 +7,6 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
 
-/* 基本樣式（保留你原本的字體與排版） */
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
@@ -38,7 +37,7 @@ canvas#stars {
 
 .hero h1 {
   font-size: 3.2rem;
-  color: #9dd6ff; /* 保留原本標題色（如需也可改） */
+  color: #9dd6ff; 
   margin-bottom: 10px;
   letter-spacing: 2px;
 }
@@ -100,7 +99,7 @@ footer {
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 let stars = [];
-const numStars = 400; // 星星數量，可再調整
+const numStars = 400; 
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -115,9 +114,9 @@ function initStars() {
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      r: Math.random() * 1.6 + 0.3,       // 星半徑
-      alpha: Math.random() * 0.9 + 0.1,   // 初始透明度（避免完全透明）
-      dAlpha: (Math.random() * 0.02) + 0.002 // 閃爍速度
+      r: Math.random() * 1.6 + 0.3,       
+      alpha: Math.random() * 0.9 + 0.1,   ）
+      dAlpha: (Math.random() * 0.02) + 0.002 
     });
   }
 }
@@ -133,7 +132,6 @@ function drawStars() {
     // 單純白色星星（透明度隨閃爍變化），沒有彩色陰影
     ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
 
-    // 若想要微弱暈光可取消下一行註解並調整 shadowBlur
     // ctx.shadowBlur = 4; ctx.shadowColor = 'rgba(255,255,255,0.6)';
 
     ctx.fill();
@@ -166,3 +164,4 @@ buttons.forEach(btn => observer.observe(btn));
 
 </body>
 </html>
+
